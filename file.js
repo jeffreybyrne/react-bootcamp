@@ -11,7 +11,7 @@ function Label(props) {
   'h1',
   null)
   // Name: {props.name})
-
+  }
 
 function ScreenName(props) {
   return <h3>Username: {props.username}</h3>
