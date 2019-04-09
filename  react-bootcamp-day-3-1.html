@@ -47,19 +47,15 @@
         this.state = {
           friends: [
             {
-              name: 'Ayron',
+              name: 'Jordyn',
               active: true,
             },
             {
-              name: 'Luke',
+              name: 'Mikenzi',
               active: true,
             },
             {
-              name: 'Jane',
-              active: true
-            },
-            {
-              name: 'Doorbell',
+              name: 'Jake',
               active: false
             }
           ],
@@ -72,16 +68,12 @@
       }
       handleAddFriend() {
         this.setState((currentState) => {
-          if (this.state.input != '') {
-            return {
-              friends: currentState.friends.concat([{
-                name: this.state.input,
-                active: true
-              }]),
-              input: ''
-            }
-          } else {
-            return ''
+          return {
+            friends: currentState.friends.concat([{
+              name: this.state.input,
+              active: true
+            }]),
+            input: ''
           }
         })
       }
