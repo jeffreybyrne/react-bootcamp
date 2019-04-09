@@ -28,14 +28,23 @@
         super(props)
 
         this.state = {
-          friends: ['Ayron', 'Luke', 'Jane']
+          friends: ['Ayron', 'Luke', 'Jane'],
+          input: '💩',
         }
         //Doing the following means that anywhere we call 'this.handleRemoveFriend' within the context of 'App', the
         // keyword 'this' will refer to 'App' rather than the location of where it's being invoked from.
         this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
+        this.updateInput = this.updateInput.bind(this);
+        this.handleAddFriend = this.handleAddFriend.bind(this);
       }
       
       handleAddFriend() {
+        this.setState((currentState) => {
+          return {
+            friends: currentState.friends.concat([currentState.input]),
+            input: ''
+          }
+        })
       }
 
       handleRemoveFriend(name) {
@@ -45,10 +54,24 @@
           }
         })
       }
+      updateInput(event) {
+        const value = event.target.value
+
+        this.setState(() => ({
+          input: value
+        }))
+      }
 
       render() {
         return (
             <div>
+              <input
+                type='text'
+                placeholder='Enter new name here'
+                value={this.state.input}
+                onChange={this.updateInput}
+              />
+              <button onClick={this.handleAddFriend}>Submit</button>
               <FriendsList
               list={this.state.friends}
               onRemoveFriend={this.handleRemoveFriend}
