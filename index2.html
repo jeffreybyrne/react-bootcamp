@@ -11,12 +11,43 @@
 
   <script type='text/babel'>
     function FriendsList (props) {
+      console.log(props)
         return (
             <ul>
-                {props.list.map((name) => (
-                    <li key={name} >
-                      <span>{name}</span>
-                      <button onClick={() => props.onRemoveFriend(name)}>Remove</button>
+                {props.list.map((friend) => (
+                    <li key={friend.name} >
+                      <span>{friend.name}</span>
+                      <button onClick={() => props.onRemoveFriend(friend.name)}>Remove</button>
+                    </li>
+                    ))}
+            </ul>
+        )
+    }
+
+    function ActiveFriendsList (props) {
+      console.log(props)
+        return (
+            <ul>
+                {props.list.map((friend) => (
+                    <li key={friend.name} >
+                      <span>{friend.name}</span>
+                      <button onClick={() => props.onRemoveFriend(friend.name)}>Remove</button>
+                      <button onClick={() => props.onDeactivate(friend)}>Deactivate</button>
+                    </li>
+                    ))}
+            </ul>
+        )
+    }
+
+    function InactiveFriendsList (props) {
+      console.log(props)
+        return (
+            <ul>
+                {props.list.map((friend) => (
+                    <li key={friend.name} >
+                      <span>{friend.name}</span>
+                      <button onClick={() => props.onRemoveFriend(friend.name)}>Remove</button>
+                      <button onClick={() => props.onActivate(friend)}>Reactivate</button>
                     </li>
                     ))}
             </ul>
@@ -28,7 +59,24 @@
         super(props)
 
         this.state = {
-          friends: ['Ayron', 'Luke', 'Jane'],
+          friends: [
+            {
+              name: 'Ayron',
+              active: true
+            },
+            {
+              name: 'Luke',
+              active: true
+            },
+            {
+              name: 'Jane',
+              active: true
+            },
+            {
+              name: 'Doorbell',
+              active: false
+            }
+          ],
           input: '💩',
         }
         //Doing the following means that anywhere we call 'this.handleRemoveFriend' within the context of 'App', the
@@ -41,7 +89,10 @@
       handleAddFriend() {
         this.setState((currentState) => {
           return {
-            friends: currentState.friends.concat([currentState.input]),
+            friends: currentState.friends.concat([{
+              name: currentState.input,
+              active: true
+            }]),
             input: ''
           }
         })
@@ -50,10 +101,17 @@
       handleRemoveFriend(name) {
         this.setState((currentState) => {
           return {
-            friends: currentState.friends.filter((friend) => friend != name)
+            friends: currentState.friends.filter((friend) => friend.name != name)
           }
         })
       }
+
+      handleActivateFriend(friend) {
+        this.setState((currentState) => {
+          return 
+        })
+      }
+
       updateInput(event) {
         const value = event.target.value
 
@@ -65,6 +123,10 @@
       render() {
         return (
             <div>
+              <h1>Clear Friends</h1>
+              <button onClick={() => this.setState({
+                friends: []
+              })}>Kill 'em</button>
               <input
                 type='text'
                 placeholder='Enter new name here'
@@ -72,24 +134,20 @@
                 onChange={this.updateInput}
               />
               <button onClick={this.handleAddFriend}>Submit</button>
-              <FriendsList
-              list={this.state.friends}
-              onRemoveFriend={this.handleRemoveFriend}
-              />
+              <h1>Active Friends</h1>
+                <ActiveFriendsList
+                list={this.state.friends.filter((friend) => friend.active === true)}
+                onRemoveFriend={this.handleRemoveFriend}
+                />
+              <h1>Inactive Friends</h1>
+              <InactiveFriendsList
+                list={this.state.friends.filter((friend) => friend.active === false)}
+                onRemoveFriend={this.handleRemoveFriend}
+                />
             </div>
         )
       }
     }
-
-    // function App () {
-    //     const friends = ['Ayron', 'Luke', 'Jane']
-
-    //     return (
-    //         <div>
-    //           <FriendsList list={friends} />
-    //         </div>
-    //   )
-    // }
 
     ReactDOM.render(
       <App />,
